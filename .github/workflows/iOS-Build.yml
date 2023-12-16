@@ -3,8 +3,6 @@ name: Build and Test
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   build:
@@ -20,6 +18,17 @@ jobs:
 
     - name: Install MAUI workload
       run: dotnet workload install maui-ios --skip-manifest-update
+
+    - name: Install WASM tools
+      run: dotnet workload install wasm-tools-net6
+
+    - name: Setup cache
+      uses: actions/cache@v2
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
 
     - name: Restore dependencies
       run: dotnet restore
