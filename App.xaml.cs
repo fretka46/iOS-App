@@ -1,21 +1,17 @@
 ﻿using Microsoft.Maui;
 using Microsoft.Maui.Controls;
-using Microsoft.Maui.Graphics;
+using Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;
+using Application = Microsoft.Maui.Controls.Application;
 
-//
 namespace First_iOSApp
 {
     public partial class App : Application
     {
         public App()
         {
-            MainPage = new ContentPage
-            {
-                Content = new StackLayout
-                {
-                    Children = { new Label { Text = "Hello World", HorizontalOptions = LayoutOptions.Center, VerticalOptions = LayoutOptions.Center } }
-                }
-            };
+            InitializeComponent();
+
+            MainPage = new MainPage();
         }
     }
 }
