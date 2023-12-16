@@ -1,14 +1,14 @@
-name: Build
+name: Build and Test
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -18,19 +18,14 @@ jobs:
       with:
         dotnet-version: '6.0.x'
 
+    - name: Install MAUI workload
+      run: dotnet workload install maui-android --skip-manifest-update
+
     - name: Restore dependencies
       run: dotnet restore
 
     - name: Build
-      run: dotnet build --no-restore -f net6.0-ios
+      run: dotnet build --no-restore
 
-    - name: Archive Artifacts
-      run: |
-        mkdir artifacts
-        mv path/to/your/app/file artifacts/
-      
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: App
-        path: artifacts/
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
